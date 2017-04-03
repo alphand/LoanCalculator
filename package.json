@@ -4,7 +4,7 @@
   "description": "Loan calculator library",
   "main": "dist/bundle.js",
   "scripts": {
-    "build": "webpack --env build",
+    "build": "webpack -p --env=production",
     "dev": "webpack --progress --colors --watch --env dev",
     "test": "karma start"
   },

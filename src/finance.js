@@ -32,7 +32,6 @@ const IPMT = (rate, payidx, nper, pv, fv, type) => {
 const PPMT = (rate, payidx, nper, pv, fv, type) => PMT(rate, nper, pv, fv, type) -
   IPMT(rate, payidx, nper, pv, fv, type);
 
-
 const AMORTIZE = (rate, nper, pv, fv, type) => {
   const pmt = PMT(rate, nper, pv, fv, type);
   const schedule = [];
