@@ -22,10 +22,18 @@ const FV = (rate, payidx, c, pv, type) => {
   return -(c * (((1 + rate) ** payidx) - 1) / rate + pv * ((1 + rate) ** payidx));
 };
 
+const IPMT = (rate, payidx, nper, pv, fv, type) => {
+  const pmt = PMT(rate, nper, pv, fv, type);
+  let ipmt = FV(rate, payidx - 1, pmt, pv, type) * rate;
+  if (type === 1) ipmt /= (1 + rate);
+  return ipmt;
+};
+
 const finance = {
   ROUND,
   PMT,
   FV,
+  IPMT,
 };
 
 export default finance;
