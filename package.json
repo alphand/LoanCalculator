@@ -2,7 +2,7 @@
   "name": "loancalculator",
   "version": "1.0.0",
   "description": "Loan calculator library",
-  "main": "index.js",
+  "main": "dist/bundle.js",
   "scripts": {
     "build": "webpack --env build",
     "dev": "webpack --progress --colors --watch --env dev",

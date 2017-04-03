@@ -33,4 +33,21 @@ describe('Finance Library', () => {
       expect(ipmtRounded).toBe(-943.14);
     });
   });
+
+  describe('PPMT Capability', () => {
+    it('should be able to calculate PPMT', () => {
+      const ppmt = Finance.PPMT(rate, payNum, nper, pv, fv, type);
+      const ppmtRounded = Finance.ROUND(ppmt, 2);
+      expect(ppmtRounded).toBe(-154.61);
+    });
+  });
+
+  describe('Amoritization Schedule', () => {
+    it('it should compute amortization schedule', () => {
+      const paySchedule = Finance.AMORTIZE(rate, nper, pv, fv, type);
+      const lastSched = paySchedule[nper - 1];
+      expect(paySchedule.length).toBe(nper);
+      expect(lastSched.balance).toBe(0);
+    });
+  });
 });

@@ -29,11 +29,36 @@ const IPMT = (rate, payidx, nper, pv, fv, type) => {
   return ipmt;
 };
 
+const PPMT = (rate, payidx, nper, pv, fv, type) => PMT(rate, nper, pv, fv, type) -
+  IPMT(rate, payidx, nper, pv, fv, type);
+
+
+const AMORTIZE = (rate, nper, pv, fv, type) => {
+  const pmt = PMT(rate, nper, pv, fv, type);
+  const schedule = [];
+
+  for (let i = 0; i < nper; i++) { // eslint-disable-line no-plusplus
+    const interest = ROUND(-(IPMT(rate, i, nper, pv, fv, type)), 2);
+    const principal = ROUND(-(PPMT(rate, i, nper, pv, fv, type)), 2);
+    const balance = ROUND(-(FV(rate, i + 1, pmt, pv, type)), 2);
+    const schedObj = {
+      interest,
+      principal,
+      balance,
+    };
+    schedule.push(schedObj);
+  }
+
+  return schedule;
+};
+
 const finance = {
   ROUND,
   PMT,
   FV,
   IPMT,
+  PPMT,
+  AMORTIZE,
 };
 
 export default finance;
