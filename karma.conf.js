@@ -74,6 +74,7 @@ module.exports = function (config) { // eslint-disable-line func-names
     // how many browser should be started simultaneous
     concurrency: Infinity,
 
+    browserNoActivityTimeout: 10000,
     browserConsoleLogOptions: {
       level: 'log',
       format: '%b %T: %m',

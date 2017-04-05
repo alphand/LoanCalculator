@@ -36,19 +36,37 @@ const AMORTIZE = (rate, nper, pv, fv, type) => {
   const pmt = PMT(rate, nper, pv, fv, type);
   const schedule = [];
 
-  for (let i = 0; i < nper; i++) { // eslint-disable-line no-plusplus
+  const totalPayment = pmt * nper;
+  let totalInterest = 0;
+  let totalPrincipal = 0;
+
+  for (let i = 1; i <= nper; i++) { // eslint-disable-line no-plusplus
+    const base = ROUND(-(FV(rate, i - 1, pmt, pv, type)), 2);
     const interest = ROUND(-(IPMT(rate, i, nper, pv, fv, type)), 2);
     const principal = ROUND(-(PPMT(rate, i, nper, pv, fv, type)), 2);
-    const balance = ROUND(-(FV(rate, i + 1, pmt, pv, type)), 2);
+    const balance = ROUND(-(FV(rate, i, pmt, pv, type)), 2);
     const schedObj = {
+      base,
       interest,
       principal,
       balance,
     };
+
+    totalInterest += interest;
+    totalPrincipal += principal;
     schedule.push(schedObj);
   }
 
-  return schedule;
+  const outObj = {
+    schedule,
+    summary: {
+      totalInterest: ROUND(totalInterest, 0),
+      totalPrincipal: ROUND(totalPrincipal, 0),
+      totalPayment: ROUND(-totalPayment, 0),
+    },
+  };
+
+  return outObj;
 };
 
 const finance = {

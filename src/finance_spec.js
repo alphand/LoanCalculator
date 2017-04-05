@@ -32,6 +32,12 @@ describe('Finance Library', () => {
       const ipmtRounded = Finance.ROUND(ipmt, 2);
       expect(ipmtRounded).toBe(-943.14);
     });
+
+    it('should calculate 1st 120k 1yr 5% to -500', () => {
+      const ipmt2 = Finance.IPMT(0.05 / 12, 1, 12, 120000, 0, 0);
+      const ipmt2Rounded = Finance.ROUND(ipmt2, 2);
+      expect(ipmt2Rounded).toBe(-500);
+    });
   });
 
   describe('PPMT Capability', () => {
@@ -44,9 +50,16 @@ describe('Finance Library', () => {
 
   describe('Amoritization Schedule', () => {
     it('it should compute amortization schedule', () => {
-      const paySchedule = Finance.AMORTIZE(rate, nper, pv, fv, type);
-      const lastSched = paySchedule[nper - 1];
-      expect(paySchedule.length).toBe(nper);
+      const summary = Finance.AMORTIZE(rate, nper, pv, fv, type);
+      const firstSched = summary.schedule[0];
+      const lastSched = summary.schedule[nper - 1];
+      expect(summary.schedule.length).toBe(nper);
+
+      expect(firstSched.interest).toBe(962.50);
+
+      expect(summary.summary.totalPrincipal).toBe(pv);
+      expect(summary.summary.totalInterest).toBe(230190);
+      expect(summary.summary.totalPayment).toBe(395190);
       expect(lastSched.balance).toBe(0);
     });
   });
